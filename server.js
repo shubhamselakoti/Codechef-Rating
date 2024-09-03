@@ -8,8 +8,12 @@ app.use(express.json());
 app.use(cors());
 
 
+app.set('view engine', 'ejs');
+
+app.use(express.static("public"));
+
 app.get('/', function(req, res){
-    res.send("Hiiiii");
+    res.render("index");
 });
 
 app.get("/:username", async (req, res) => {
@@ -26,9 +30,17 @@ app.get("/:username", async (req, res) => {
     }
 
     const $ = cheerio.load(response.data);
+    // console.log(response.data);
+    
     const ratingNumber = $('.rating-number').text().trim();
     const ratingHeader = $('.rating-header').text().trim();
-
+    let problemSolved = $('section.rating-data-section h3').text().trim();
+    let participation = $('.contest-participated-count b').text().trim();
+    problemSolved = problemSolved.split(":")[1].trim();
+    let globalRank = $('.rating-ranks strong').first().text().trim();
+    let countryRank = $('.rating-ranks strong').eq(1).text().trim();
+    
+    
     if (ratingNumber && ratingHeader) {
       const smallTag = $('.rating-header small').text().trim();
       const numericValue = smallTag.match(/\d+/);
@@ -37,7 +49,13 @@ app.get("/:username", async (req, res) => {
       maxRank = numericValue ? numericValue[0] : null;
     }
 
-    res.json({ currentRank: curRank, maxRank: maxRank });
+    res.json({ currentRank: curRank,
+               maxRank: maxRank,
+              participatedContest: participation,
+              problemSolved: problemSolved,
+              globalRank: globalRank,
+              countryRank: countryRank
+    });
   } catch (error) {
     console.log('Error fetching the page:', error);
     res.status(404).json({ error: 'User not found or page not accessible' });
