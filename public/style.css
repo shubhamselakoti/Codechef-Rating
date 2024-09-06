@@ -71,7 +71,11 @@ h1{
     border-bottom: 1px solid white;
 }
 
-
+.no-break {
+    white-space: nowrap;         /* Prevents text from wrapping */
+    overflow: hidden;            /* Ensures that overflow is handled */
+    text-overflow: ellipsis;     /* Adds ellipsis when text is too long */
+}
 
 .context {
     width: 100%;
@@ -86,6 +90,21 @@ h1{
     font-size: 50px;
 }
 
+
+@media screen and (max-width: 650px) {
+    .wrapper{
+        flex-wrap: wrap;
+        align-content: center;
+    }
+    .container{
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    .container, .howToUse {
+        margin: 5% 0;
+        width: 90% !important;
+    }
+}
 
 .area{
     width: 100%;
