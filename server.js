@@ -44,8 +44,9 @@ app.get("/:username", async (req, res) => {
     if (ratingNumber && ratingHeader) {
       const smallTag = $('.rating-header small').text().trim();
       const numericValue = smallTag.match(/\d+/);
+      const numericRatingValue = ratingNumber.match(/\d+/);
 
-      curRank = ratingNumber;
+      curRank = numericRatingValue ? numericRatingValue[0] : null;
       maxRank = numericValue ? numericValue[0] : null;
     }
 
